@@ -200,7 +200,7 @@ class Transformer(object):
             type_sub_element.text = "OPeNDAP"
             description_sub_element.text = "Open-source Project for a Network Data Access Protocol."
             resource_sub_element.text = (
-                        "http://nbstds.met.no/thredds/dodsC/NBS/" + path_prefix + id + ".nc")
+                        "https://nbstds.met.no/thredds/dodsC/NBS/" + path_prefix + id + ".nc")
             wms_layer = ET.SubElement(wms_layers_sub_element, ET.QName(ns, 'wms_layer'))
             return data_access_element
         elif element_type == "OGC WMS":
@@ -252,7 +252,7 @@ class Transformer(object):
                 description_sub_element.text = "OGC Web Mapping Service, URI to GetCapabilities " \
                                                "Document."
                 resource_sub_element.text = (
-                            "http://nbswms.met.no/thredds/wms_ql/NBS/" + path_prefix + id + ".nc")
+                            "https://nbswms.met.no/thredds/wms_ql/NBS/" + path_prefix + id + ".nc")
                 for p in polarisation.split():
                     wms_layer = ET.SubElement(wms_layers_sub_element, ET.QName(ns, 'wms_layer'))
                     wms_layer.text = str("Amplitude " + p + " polarisation")
@@ -265,7 +265,7 @@ class Transformer(object):
                                                " May require authentication, but should point "
                                                "directly to" +
                                                " the data file or a catalogue containing the data.")
-            resource_sub_element.text = ("http://nbstds.met.no/thredds/fileServer/NBS/"
+            resource_sub_element.text = ("https://nbstds.met.no/thredds/fileServer/NBS/"
                                          + path_prefix + id + ".nc")
             wms_layer = ET.SubElement(wms_layers_sub_element, ET.QName(ns, 'wms_layer'))
             return data_access_element
