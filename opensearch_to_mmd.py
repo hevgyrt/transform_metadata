@@ -16,7 +16,9 @@ import lxml.etree as ET
 import codecs
 import numpy as np
 import sys
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Transformer(object):
     """ Object with methods for transforming xml files """
@@ -33,7 +35,7 @@ class Transformer(object):
     def transform(self):
         """ Function for transforming xml files
         """
-        print("\n------------START TRANSFORMING METADATA FILE(S)---------------\n")
+        logger.info("\n------------START TRANSFORMING METADATA FILE(S)---------------\n")
         filepath, stylesheet, output_path = self.filepath, self.stylesheet, self.output_path
         single_file, filename = self.single_file, self.filename
         counter = self.counter
@@ -165,7 +167,7 @@ class Transformer(object):
             ##    print("Could not transform file %s" % name)
             ##    print(e)
 
-        print("Transformed %i files to \n\t%s" % (counter, output_path))
+        logger.info("Transformed %i files to \n\t%s" % (counter, output_path))
 
     def create_related_information_element(self, root, element_type, path_prefix, id):
         """ Function for manually constructing related_information elements """
@@ -276,16 +278,24 @@ class Transformer(object):
             wms_layer = ET.SubElement(wms_layers_sub_element, ET.QName(ns, 'wms_layer'))
             return data_access_element
         else:
-            print("Invalid data access element")
+            logger.error("Invalid data access element")
             return None
 
 
 def main():
-    fpath = '/home/nbs/file_conversion_test/nbs_tools/transform_metadata/test_OS_data/'
-    output_path = ''
+    fpath = '/home/nbs/file_conversion_test/transform_metadata/tests/'
+    output_path = 'tests/'
 
-    stylesheet = '/home/nbs/file_conversion_test/nbs_tools/sentinel_OpenSearch_to_mmd.xsl'
-    single_file = False
+    # Stream logging
+    log_info = logging.StreamHandler(sys.stdout)
+    raise_error_if_invalid = True
+    log_info.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.addHandler(log_info)
+
+    stylesheet = '/home/nbs/file_conversion_test/transform_metadata/sentinel_OpenSearch_to_mmd.xsl'
+    single_file = True
     # filename = 'S1B_EW_GRDM_1SSH_20171017T030716_20171017T030826_007863_00DE33_D6C1'
     filename = 'test_opensearch_s1'
     # filename = 'S2A_MSIL1C_20171010T104021_N0205_R008_T32VMH_20171010T104021'
